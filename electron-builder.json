@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "YourAppID",
+  "appId": "com.vungocbinh.ClassroomTimer2",
   "asar": true,
   "directories": {
     "output": "release/${version}"
@@ -10,11 +10,12 @@
     "dist"
   ],
   "mac": {
-    "artifactName": "${productName}_${version}.${ext}",
     "target": [
       "dmg",
       "zip"
-    ]
+    ],
+    "category": "public.app-category.utilities",
+    "icon": "build/icons/icon.icns"
   },
   "win": {
     "target": [
@@ -32,6 +33,13 @@
     "perMachine": false,
     "allowToChangeInstallationDirectory": true,
     "deleteAppDataOnUninstall": false
+  },
+  "linux": {
+    "target": ["AppImage", "deb", "snap"]
+  },
+  "snap": {
+    "grade": "stable",
+    "confinement": "strict"
   },
   "publish": {
     "provider": "generic",
