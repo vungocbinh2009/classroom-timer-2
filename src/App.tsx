@@ -1,36 +1,47 @@
-import { useState } from 'react'
-import UpdateElectron from '@/components/update'
-import logoVite from './assets/logo-vite.svg'
-import logoElectron from './assets/logo-electron.svg'
+import { useRef, useState } from 'react';
 import './App.css'
+import { TimerBlock } from './components/TimerBlock'
+import WindowBar from './components/WindowBar'
+import { Stack } from '@mui/material';
 
 function App() {
-  const [count, setCount] = useState(0)
-  return (
-    <div className='App'>
-      <div className='logo-box'>
-        <a href='https://github.com/electron-vite/electron-vite-react' target='_blank'>
-          <img src={logoVite} className='logo vite' alt='Electron + Vite logo' />
-          <img src={logoElectron} className='logo electron' alt='Electron + Vite logo' />
-        </a>
-      </div>
-      <h1>Electron + Vite + React</h1>
-      <div className='card'>
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>
-        Click on the Electron + Vite logo to learn more
-      </p>
-      <div className='flex-center'>
-        Place static files into the<code>/public</code> folder <img style={{ width: '5em' }} src='./node.svg' alt='Node logo' />
-      </div>
+  const [timers, setTimers] = useState<number[]>([]);
+  const [isViewMode, setViewMode] = useState(false)
+  const appContainer = useRef<HTMLDivElement>(null)
 
-      <UpdateElectron />
+  const handleViewMode = () => {
+    setViewMode(!isViewMode)
+  }
+  
+  const handleAddTimer = () => {
+    setTimers((prev) => [...prev, Date.now()]); // use timestamp as unique key
+  };
+
+  const handleDeleteTimer = (id: number) => {
+    setTimers((prev) => prev.filter((timerId) => timerId !== id));
+  };
+
+  const handleResizeWindowHeight = () => {
+    if (appContainer) {
+      const height = appContainer.current?.offsetHeight;
+      // console.log(height)
+      if (height) {
+        window.electronAPI.resizeToContent(height);
+      }
+    }
+  };
+  return (
+    <div ref={appContainer}>
+      <WindowBar 
+        onAddTimer={handleAddTimer} 
+        isViewMode={isViewMode}
+        onViewModeUpdated={handleViewMode} 
+        onResizeWindowHeight={handleResizeWindowHeight}/>
+      <Stack spacing={0} sx={{ padding: 0, alignItems: 'center'}}>
+        {timers.map((id) => (
+          <TimerBlock key={id} id={id} onDelete={handleDeleteTimer} isViewMode={isViewMode}/>
+        ))}
+      </Stack>
     </div>
   )
 }

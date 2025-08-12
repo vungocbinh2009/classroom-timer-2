@@ -1,0 +1,51 @@
+@use '../styles' as style;
+
+.windowBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: style.$windowbar-bg;
+  color: style.$windowbar-text;
+  margin: 0;
+  user-select: none;
+  -webkit-app-region: drag;
+  padding: 0.4rem 0.8rem;
+
+  @media (max-width: 350px) {
+    .title {
+      display: none;
+    }
+  }
+  @media (min-width: 350px) {
+    .title {
+      font-size: 1rem;
+      font-weight: bold;
+    }
+  }
+  
+  .actions {
+    display: flex;
+    gap: 0;
+    -webkit-app-region: no-drag;
+
+    button {
+      background: transparent;
+      color: style.$windowbar-text;
+      border: none;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+      border-radius: 0.25rem;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: style.$windowbar-hover;
+      }
+
+      &.close {
+        &:hover {
+          background-color: style.$color-error;
+        }
+      }
+    }
+  }
+}

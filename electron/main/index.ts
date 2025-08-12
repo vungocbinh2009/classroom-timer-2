@@ -1,9 +1,9 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron'
+import { app, BrowserWindow, shell } from 'electron'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import os from 'node:os'
-import { update } from './update'
+import setupIpcMain from './ipcMain'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -44,19 +44,21 @@ const preload = path.join(__dirname, '../preload/index.mjs')
 const indexHtml = path.join(RENDERER_DIST, 'index.html')
 
 async function createWindow() {
-  win = new BrowserWindow({
-    title: 'Main window',
-    icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
+  const win = new BrowserWindow({
+    width: 500,
+    height: 500,
+    minWidth: 320,
+    minHeight: 50,
+    // <- removes OS titlebar and frame
+    frame: false,
+    // optional: true makes background transparent (has platform caveats)         
+    transparent: false,
     webPreferences: {
       preload,
-      // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
-      // nodeIntegration: true,
-
-      // Consider using contextBridge.exposeInMainWorld
-      // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
-      // contextIsolation: false,
-    },
-  })
+      contextIsolation: true,
+      nodeIntegration: false,
+    }
+  });
 
   if (VITE_DEV_SERVER_URL) { // #298
     win.loadURL(VITE_DEV_SERVER_URL)
@@ -73,15 +75,17 @@ async function createWindow() {
 
   // Make all links open with the browser, not with the application
   win.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith('https:')) shell.openExternal(url)
+    if (url.startsWith('https:')) {
+      shell.openExternal(url)
+    }
     return { action: 'deny' }
   })
-
-  // Auto update
-  update(win)
 }
 
-app.whenReady().then(createWindow)
+app.whenReady().then(() => {
+  setupIpcMain()
+  createWindow()
+})
 
 app.on('window-all-closed', () => {
   win = null
@@ -91,33 +95,18 @@ app.on('window-all-closed', () => {
 app.on('second-instance', () => {
   if (win) {
     // Focus on the main window if the user tried to open another
-    if (win.isMinimized()) win.restore()
+    if (win.isMinimized()) {
+      win.restore()
+    }
     win.focus()
   }
 })
 
 app.on('activate', () => {
   const allWindows = BrowserWindow.getAllWindows()
-  if (allWindows.length) {
+  if (allWindows.length > 0) {
     allWindows[0].focus()
   } else {
     createWindow()
-  }
-})
-
-// New window example arg: new windows url
-ipcMain.handle('open-win', (_, arg) => {
-  const childWindow = new BrowserWindow({
-    webPreferences: {
-      preload,
-      nodeIntegration: true,
-      contextIsolation: false,
-    },
-  })
-
-  if (VITE_DEV_SERVER_URL) {
-    childWindow.loadURL(`${VITE_DEV_SERVER_URL}#${arg}`)
-  } else {
-    childWindow.loadFile(indexHtml, { hash: arg })
   }
 })

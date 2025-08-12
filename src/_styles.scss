@@ -1,0 +1,42 @@
+// ==========================
+// Swinburne Theme Variables
+// ==========================
+
+// Brand colors
+$color-swinburne-red: #d6001c;
+$color-swinburne-red-light: #e52a3c;
+$color-swinburne-red-dark: #a10014;
+
+$color-black: #000000;
+$color-dark-gray: #333333;
+$color-gray: #999999;
+$color-light-gray: #f5f5f5;
+$color-border-gray: #e0e0e0;
+$color-white: #ffffff;
+
+// Status colors
+$color-success: #28a745;
+$color-warning: #ffc107;
+$color-error: $color-swinburne-red;
+
+// ==========================
+// Component-specific defaults
+// ==========================
+
+// Window bar
+$windowbar-bg: $color-swinburne-red;
+$windowbar-text: $color-white;
+$windowbar-hover: $color-swinburne-red-light;
+
+// Timer block
+$timer-bg: $color-light-gray;
+$timer-text: $color-dark-gray;
+$timer-button-primary-bg: $color-swinburne-red;
+$timer-button-primary-text: $color-white;
+$timer-button-secondary-bg: $color-gray;
+$timer-button-secondary-text: $color-white;
+
+// Right panel (editable text)
+$right-panel-bg: $color-white;
+$right-panel-border: $color-border-gray;
+$right-panel-text: $color-dark-gray;
