@@ -4,6 +4,7 @@ import { TimerBlock } from './components/TimerBlock'
 import WindowBar from './components/WindowBar'
 import { Stack } from '@mui/material';
 
+// Test
 function App() {
   const [timers, setTimers] = useState<number[]>([]);
   const [isViewMode, setViewMode] = useState(false)
