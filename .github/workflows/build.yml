@@ -47,6 +47,7 @@ jobs:
         with:
           name: dist-${{ matrix.os }}
           path: release/*/*
+          retention-days: 1
 
   release:
     runs-on: ubuntu-latest
@@ -54,6 +55,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+
+      - name: Set up Git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      
       - uses: actions/setup-node@v4
         with:
           node-version: 22
