@@ -9,12 +9,15 @@
     "release": true,
     "draft": true,
     "assets": [
-      "./**/*.AppImage",
-      "./**/*.deb",
-      "./**/*.snap",
-      "./**/*.dmg",
-      "./**/*.exe",
-      "./**/*.zip"
+        "dist-all/*/*.exe",
+        "dist-all/*/*.msi",
+        "dist-all/*/*.zip",
+        "dist-all/*/*.dmg",
+        "dist-all/*/*.pkg",
+        "dist-all/*/*.AppImage",
+        "dist-all/*/*.deb",
+        "dist-all/*/*.rpm",
+        "dist-all/*/*.tar.gz"
     ]
   },
   "hooks": {

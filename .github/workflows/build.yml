@@ -46,13 +46,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: dist-${{ matrix.os }}
-          path: |
-            ./*/*.AppImage
-						./*/*.deb
-						./*/*.snap
-						./*/*.dmg
-						./*/*.exe
-						./*/*.zip
+          path: release/*/*
 
   release:
     runs-on: ubuntu-latest
