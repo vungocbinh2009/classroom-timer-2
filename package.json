@@ -2,7 +2,7 @@
   "name": "classroom-timer-2",
   "version": "1.1.0",
   "main": "dist-electron/main/index.js",
-  "description": "Simple clock for time management",
+  "description": "Simple clock for time management.",
   "author": "Vu Ngoc Binh <vungocbinh@protonmail.com>",
   "license": "MIT",
   "private": true,
