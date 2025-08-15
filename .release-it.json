@@ -9,11 +9,12 @@
     "release": true,
     "draft": true,
     "assets": [
-      "${version}/*.AppImage",
-      "${version}/*.deb",
-      "${version}/*.exe",
-      "${version}/*.dmg",
-      "${version}/*.snap"
+      "./**/*.AppImage",
+      "./**/*.deb",
+      "./**/*.snap",
+      "./**/*.dmg",
+      "./**/*.exe",
+      "./**/*.zip"
     ]
   },
   "hooks": {
