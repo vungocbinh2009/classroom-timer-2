@@ -1,4 +1,5 @@
-import { BrowserWindow, ipcMain } from "electron"
+import { Corner, WindowSize } from "@/type/main"
+import { BrowserWindow, ipcMain, screen } from "electron"
 
 let setupIpcMain = () => {
     
@@ -33,13 +34,50 @@ let setupIpcMain = () => {
         let win = BrowserWindow.getFocusedWindow()
         win?.isMaximized() ?? false
     });
-    ipcMain.on("resize-to-content", (_, height: number) => {
+    ipcMain.on("resize-to-content", (_, size: WindowSize) => {
         let win = BrowserWindow.getFocusedWindow()
         if (win) {
             const [width, _] = win.getSize();
-            win.setSize(width, height);
+            win.setSize(size.width, size.height);
         }
     })
+    ipcMain.on('move-window', (_, corner: Corner) => {
+        let win = BrowserWindow.getFocusedWindow()
+        if (win) {
+            moveWindowToCorner(win, corner)
+        }
+    });
+}
+
+let moveWindowToCorner = (window: BrowserWindow, corner: Corner) => {
+    const display = screen.getDisplayMatching(window.getBounds());
+    const { workArea } = display;
+    const windowBounds = window.getBounds();
+
+    let x = workArea.x;
+    let y = workArea.y;
+
+    switch (corner) {
+        case 'top-left':
+        break;
+        case 'top-right':
+        x = workArea.x + workArea.width - windowBounds.width;
+        break;
+        case 'bottom-left':
+        y = workArea.y + workArea.height - windowBounds.height;
+        break;
+        case 'bottom-right':
+        x = workArea.x + workArea.width - windowBounds.width;
+        y = workArea.y + workArea.height - windowBounds.height;
+        break;
+    }
+
+    window.setBounds({
+        x,
+        y,
+        width: windowBounds.width,
+        height: windowBounds.height,
+    });
 }
 
 export default setupIpcMain

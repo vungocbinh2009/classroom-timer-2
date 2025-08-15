@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styles from "./WindowBar.module.scss"
-import { Button, IconButton } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Menu, MenuItem, Popper, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAdd, faArrowsUpDownLeftRight, faEye, faPencil, faThumbtack, faThumbtackSlash, faWindowClose, faWindowMaximize, faWindowMinimize, faWindowRestore } from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faArrowsUpDownLeftRight, faCaretDown, faEye, faInfo, faLocationCrosshairs, faPencil, faThumbtack, faThumbtackSlash, faWindowClose, faWindowMaximize, faWindowMinimize, faWindowRestore } from '@fortawesome/free-solid-svg-icons';
+import { Corner } from '@/type/main';
 
 interface WindowBarProps {
   isViewMode: boolean;
@@ -14,6 +15,10 @@ interface WindowBarProps {
 export default function WindowBar(props: WindowBarProps) {
   const [isMax, setIsMax] = useState(false);
   const [isPinned, setPinned] = useState(false)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const [open2, setOpen2] = React.useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
 
   useEffect(() => {
     // Check maximize state when mounted
@@ -34,32 +39,93 @@ export default function WindowBar(props: WindowBarProps) {
     window.electronAPI.togglePin(!isPinned)
   }
 
-  return (
-    <div className={styles.windowBar}>
-      <div className={styles.title}>Vu Ngoc Binh</div>
-      <div className={styles.actions}>
-        <IconButton size="small" onClick={props.onResizeWindowHeight}>
-            <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
-        </IconButton>
-        <IconButton size="small" onClick={pinWindow}>
-            <FontAwesomeIcon icon={isPinned ? faThumbtack : faThumbtackSlash} />
-        </IconButton>
-        <IconButton size="small" onClick={props.onViewModeUpdated}>
-            <FontAwesomeIcon icon={props.isViewMode ? faEye : faPencil} />
-        </IconButton>
-        <IconButton size="small" onClick={props.onAddTimer}>
-            <FontAwesomeIcon icon={faAdd} />
-        </IconButton>
-        <IconButton size="small" onClick={() => window.electronAPI.minimize()}>
-            <FontAwesomeIcon icon={faWindowMinimize} />
-        </IconButton>
-        <IconButton size="small" onClick={toggleMax}>
-            <FontAwesomeIcon icon={isMax ? faWindowRestore : faWindowMaximize} />
-        </IconButton>
-        <IconButton size="small" onClick={() => window.electronAPI.close()}>
-            <FontAwesomeIcon icon={faWindowClose} />
-        </IconButton>
-      </div>
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMoreBtnClick = (event: React.MouseEvent<HTMLElement>) => {
+    setOpen2(!open2)
+  };
+
+  const handleClose = (corner?: Corner) => {
+    setAnchorEl(null)
+    if (corner) {
+      window.electronAPI.moveWindow(corner);
+    }
+  };
+
+  const functionalButton = (className: string) => (
+    <div className={className}>
+      <IconButton onClick={handleClick}>
+          <FontAwesomeIcon icon={faLocationCrosshairs} />
+      </IconButton>
+      <IconButton size="small" onClick={pinWindow}>
+          <FontAwesomeIcon icon={isPinned ? faThumbtack : faThumbtackSlash} />
+      </IconButton>
+      <IconButton size="small" onClick={props.onViewModeUpdated}>
+          <FontAwesomeIcon icon={props.isViewMode ? faEye : faPencil} />
+      </IconButton>
+      <IconButton size="small" onClick={props.onAddTimer}>
+          <FontAwesomeIcon icon={faAdd} />
+      </IconButton>
+      <IconButton size="small" onClick={() => setAboutOpen(true)}>
+          <FontAwesomeIcon icon={faInfo} />
+      </IconButton>
     </div>
+  )
+
+  return (
+    <>
+      <div className={styles.windowBar}>
+        <div className={styles.actions}>
+          {functionalButton(styles.functionalButton)}
+          <IconButton size="small" onClick={handleMoreBtnClick} className={styles.moreButton}>
+              <FontAwesomeIcon icon={faCaretDown} />
+          </IconButton>
+          <IconButton size="small" onClick={props.onResizeWindowHeight}>
+              <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
+          </IconButton>
+          <IconButton size="small" onClick={() => window.electronAPI.minimize()}>
+              <FontAwesomeIcon icon={faWindowMinimize} />
+          </IconButton>
+          <IconButton size="small" onClick={toggleMax}>
+              <FontAwesomeIcon icon={isMax ? faWindowRestore : faWindowMaximize} />
+          </IconButton>
+          <IconButton size="small" onClick={() => window.electronAPI.close()}>
+              <FontAwesomeIcon icon={faWindowClose} />
+          </IconButton>
+
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={() => handleClose()}
+          >
+            <MenuItem onClick={() => handleClose('top-left')}>Top Left</MenuItem>
+            <MenuItem onClick={() => handleClose('top-right')}>Top Right</MenuItem>
+            <MenuItem onClick={() => handleClose('bottom-left')}>Bottom Left</MenuItem>
+            <MenuItem onClick={() => handleClose('bottom-right')}>Bottom Right</MenuItem>
+          </Menu>
+        </div>
+      </div>
+
+      {open2 && functionalButton(styles.secondaryBar)}
+
+      {/* About Dialog */}
+      <Dialog open={aboutOpen} onClose={() => setAboutOpen(false)}>
+        <DialogTitle>About This App</DialogTitle>
+        <DialogContent dividers>
+          <Typography variant="body1">
+            App name: Classroom Timer 2 <br/>
+            Author: Vu Ngoc Binh <br/>
+            Description: Lightweight timer tool for teaching <br/>
+            App icon generated by ChatGPT
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setAboutOpen(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
+    </>
+    
   );
 }

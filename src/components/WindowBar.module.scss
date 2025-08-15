@@ -3,7 +3,7 @@
 .windowBar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   background-color: style.$windowbar-bg;
   color: style.$windowbar-text;
   margin: 0;
@@ -11,20 +11,32 @@
   -webkit-app-region: drag;
   padding: 0.4rem 0.8rem;
 
-  @media (max-width: 350px) {
+  @media (max-width: 400px) {
     .title {
       display: none;
     }
+    .functionalButton {
+      display: none
+    }
+    .moreButton {
+      display: flex
+    }
   }
-  @media (min-width: 350px) {
+  @media (min-width: 400px) {
     .title {
       font-size: 1rem;
       font-weight: bold;
     }
+    .functionalButton {
+      display: flex
+    }
+    .moreButton {
+      display: none
+    }
   }
   
   .actions {
-    display: flex;
+    display: flex block;
     gap: 0;
     -webkit-app-region: no-drag;
 
@@ -46,6 +58,24 @@
           background-color: style.$color-error;
         }
       }
+    }
+  }
+}
+
+.secondaryBar {
+  @media (min-width: 400px) {
+    display: none;
+  }
+
+  @media (max-width: 400px) {
+    display: flex block;
+    background-color: style.$windowbar-bg;
+    margin: 0;
+    padding: 0.4rem 0.8rem;
+    justify-content: center;
+
+    button {
+      color: style.$windowbar-text;
     }
   }
 }

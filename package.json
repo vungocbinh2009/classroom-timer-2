@@ -1,5 +1,5 @@
 {
-  "name": "ClassroomTimer2",
+  "name": "classroom-timer-2",
   "version": "1.0.0",
   "main": "dist-electron/main/index.js",
   "description": "Simple clock for time management",

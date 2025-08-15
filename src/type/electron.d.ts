@@ -1,3 +1,5 @@
+import { WindowSize } from "./main";
+
 declare global {
   interface Window {
     electronAPI: {
@@ -6,7 +8,8 @@ declare global {
       close: () => void;
       isMaximized: () => Promise<boolean>;
       togglePin: (pin: boolean) => void;
-      resizeToContent: (height: number) => void;
+      resizeToContent: (size: WindowSize) => void;
+      moveWindow: (corner: Corner) => void;
     };
   }
 }

@@ -22,12 +22,15 @@ function App() {
   };
 
   const handleResizeWindowHeight = () => {
+    const MIN_WIDTH = 320
     if (appContainer) {
-      const height = appContainer.current?.offsetHeight;
+      const height = appContainer.current?.offsetHeight ?? 0;
+      const width = appContainer.current?.offsetWidth ?? MIN_WIDTH;
       // console.log(height)
-      if (height) {
-        window.electronAPI.resizeToContent(height);
-      }
+      window.electronAPI.resizeToContent({
+        height,
+        width: Math.max(width, MIN_WIDTH)
+      });
     }
   };
   return (

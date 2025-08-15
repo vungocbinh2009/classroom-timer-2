@@ -1,91 +1,77 @@
-# electron-vite-react
+# Classroom Timer 2
 
-[![awesome-vite](https://awesome.re/mentioned-badge.svg)](https://github.com/vitejs/awesome-vite)
-![GitHub stars](https://img.shields.io/github/stars/caoxiemeihao/vite-react-electron?color=fa6470)
-![GitHub issues](https://img.shields.io/github/issues/caoxiemeihao/vite-react-electron?color=d8b22d)
-![GitHub license](https://img.shields.io/github/license/caoxiemeihao/vite-react-electron)
-[![Required Node.JS >= 14.18.0 || >=16.0.0](https://img.shields.io/static/v1?label=node&message=14.18.0%20||%20%3E=16.0.0&logo=node.js&color=3f893e)](https://nodejs.org/about/releases)
+A cross-platform desktop application built with **Electron**, **React**, and **Material-UI** that allows you to manage multiple customizable countdown timers in a frameless window. The app is designed with a Swinburne-inspired color theme and supports features like draggable window areas, pinning, and customizable descriptions.
 
-English | [简体中文](README.zh-CN.md)
+## ✨ Features
 
-## 👀 Overview
+- **Multiple Timers**: Add, delete, and manage multiple independent countdown timers.
+- **Custom Time Control**: Set countdown duration and start/pause timers using an intuitive interface.
+- **Description Editor**: Add or update text descriptions for each timer.
+- **Pin to Top**: Keep the window always on top for easy monitoring while working in other apps.
+- **Corner Positioning**: Move the app window to any screen corner with a single click.
+- **Responsive Window Bar**: Automatically hides excess controls when the window width is small, accessible via a “More” button.
+- **Frameless Design**: Sleek, custom-styled window bar with drag support.
+- **Cross-Platform Build**: Build for **Windows**, **Linux** (AppImage, DEB, Snap), and **macOS** from a single codebase.
 
-📦 Ready out of the box  
-🎯 Based on the official [template-react-ts](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts), project structure will be familiar to you  
-🌱 Easily extendable and customizable  
-💪 Supports Node.js API in the renderer process  
-🔩 Supports C/C++ native addons  
-🐞 Debugger configuration included  
-🖥 Easy to implement multiple windows  
+## 🛠️ Technology Stack
 
-## 🛫 Quick Setup
+- **[Electron](https://www.electronjs.org/)** – Cross-platform desktop app framework.
+- **[React](https://react.dev/)** – Front-end UI library.
+- **[Material-UI (MUI)](https://mui.com/)** – Modern UI components and styling.
+- **[TypeScript](https://www.typescriptlang.org/)** – Strong typing for better maintainability.
+- **[easyTimer.js](https://albert-gonzalez.github.io/easytimer.js/)** – Simple and lightweight timer management.
+- **SCSS** – Custom styling with variables and nesting.
+- **FontAwesome** – Icon set for buttons and features.
 
-```sh
-# clone the project
-git clone https://github.com/electron-vite/electron-vite-react.git
+## 📦 Installation & Development
 
-# enter the project directory
-cd electron-vite-react
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/vungocbinh2009/classroom-timer-2
+   cd classroom-timer-2
+   ```
 
-# install dependency
-npm install
+2. **Install dependencies**:
 
-# develop
-npm run dev
-```
+   ```bash
+   npm install
+   ```
 
-## 🐞 Debug
+3. **Start the app in development mode**:
 
-![electron-vite-react-debug.gif](/electron-vite-react-debug.gif)
+   ```bash
+   npm run dev
+   ```
 
-## 📂 Directory structure
+4. **Build the app for your platform**:
 
-Familiar React application structure, just with `electron` folder on the top :wink:  
-*Files in this folder will be separated from your React application and built into `dist-electron`*  
+   ```bash
+   npm run build
+   ```
 
-```tree
-├── electron                                 Electron-related code
-│   ├── main                                 Main-process source code
-│   └── preload                              Preload-scripts source code
-│
-├── release                                  Generated after production build, contains executables
-│   └── {version}
-│       ├── {os}-{os_arch}                   Contains unpacked application executable
-│       └── {app_name}_{version}.{ext}       Installer for the application
-│
-├── public                                   Static assets
-└── src                                      Renderer source code, your React application
-```
+## 🖥️ Building for Multiple Platforms
 
-<!--
-## 🚨 Be aware
+This app uses **electron-builder** to create binaries:
 
-This template integrates Node.js API to the renderer process by default. If you want to follow **Electron Security Concerns** you might want to disable this feature. You will have to expose needed API by yourself.  
+* **Windows (x64)**: `.exe` installer
+* **Linux (x64)**: `.AppImage`, `.deb`, and `.snap`
+* **macOS (x64)**: `.dmg` installer
 
-To get started, remove the option as shown below. This will [modify the Vite configuration and disable this feature](https://github.com/electron-vite/vite-plugin-electron-renderer#config-presets-opinionated).
+Build configuration is stored in `electron-builder.json`.
 
-```diff
-# vite.config.ts
+## 🎨 Theme
 
-export default {
-  plugins: [
-    ...
--   // Use Node.js API in the Renderer-process
--   renderer({
--     nodeIntegration: true,
--   }),
-    ...
-  ],
-}
-```
--->
+The app’s design is inspired by the Swinburne University logo colors:
 
-## 🔧 Additional features
+* **Primary Red**: `#e60028`
+* **Secondary Black**: `#000000`
+* **Light Gray Background**: `#f5f5f5`
+* **Accent White**: `#ffffff`
 
-1. electron-updater 👉 [see docs](src/components/update/README.md)
-1. playwright
+## 📜 License
 
-## ❔ FAQ
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
-- [C/C++ addons, Node.js modules - Pre-Bundling](https://github.com/electron-vite/vite-plugin-electron-renderer#dependency-pre-bundling)
-- [dependencies vs devDependencies](https://github.com/electron-vite/vite-plugin-electron-renderer#dependencies-vs-devdependencies)
+## 📌 About
+
+This project was created to provide a clean, customizable, and visually appealing way to manage multiple timers in a lightweight desktop app, suitable for teaching, studying, or productivity purposes.
