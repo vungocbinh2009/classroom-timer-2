@@ -18,7 +18,6 @@
     ]
   },
   "hooks": {
-    "before:init": "echo Starting release for version ${version}",
-    "before:github:release": "npm run build"
+    "before:init": "echo Starting release for version ${version}"
   }
 }
