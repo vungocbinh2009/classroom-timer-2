@@ -1,0 +1,23 @@
+{
+  "git": {
+    "tagName": "v${version}",
+    "requireCleanWorkingDir": true,
+    "commitMessage": "chore: release ${version}",
+    "push": true
+  },
+  "github": {
+    "release": true,
+    "draft": true,
+    "assets": [
+      "dist/*.AppImage",
+      "dist/*.deb",
+      "dist/*.exe",
+      "dist/*.dmg",
+      "dist/*.snap"
+    ]
+  },
+  "hooks": {
+    "before:init": "echo Starting release for version ${version}",
+    "before:github:release": "npm run build"
+  }
+}
