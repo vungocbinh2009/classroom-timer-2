@@ -1,0 +1,30 @@
+@use '../styles' as styles;
+
+.randomNumberBlock {
+  padding: 16px;
+  margin: 12px;
+  border-radius: 16px;
+  background: styles.$timer-bg;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: center;
+
+  /* button background */
+  :global(.MuiButton-root) {
+    background-color: styles.$color-swinburne-red;
+  }
+
+  /* When focused — change border to red */
+  :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+    border-color: styles.$color-swinburne-red;
+  }
+
+  /*Textfield input label khi focus*/
+  :global(.MuiInputLabel-root.Mui-focused) {
+    color: styles.$color-swinburne-red; /* when active */
+  }
+}
+
+  /* Dòng chữ hiển thị kết quả */
+.result {
+  color: styles.$color-swinburne-red;
+}

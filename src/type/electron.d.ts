@@ -10,6 +10,7 @@ declare global {
       togglePin: (pin: boolean) => void;
       resizeToContent: (size: WindowSize) => void;
       moveWindow: (corner: Corner) => void;
+      getAppVersion: () => Promise<string>
     };
   }
 }

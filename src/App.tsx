@@ -1,25 +1,51 @@
-import { useRef, useState } from 'react';
-import './App.css'
+import { useEffect, useRef, useState } from 'react';
 import { TimerBlock } from './components/TimerBlock'
 import WindowBar from './components/WindowBar'
-import { Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
+import RandomNumberBlock from './components/RandomNumberBlock';
+import styles from "./App.module.scss"
 
-// Test
+export enum BlockType {
+  TIMER = "timer",
+  RANDOM_NUMBER = "randomNumber"
+}
+
+interface BlockInfo {
+  time: number
+  blockType: BlockType
+}
+
 function App() {
-  const [timers, setTimers] = useState<number[]>([]);
+  const [blocks, setBlocks] = useState<BlockInfo[]>([]);
   const [isViewMode, setViewMode] = useState(false)
   const appContainer = useRef<HTMLDivElement>(null)
+  const windowBar = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const updateHeight = () => {
+      if (windowBar.current) {
+        document.documentElement.style.setProperty(
+          "--windowbar-height",
+          `${windowBar.current.offsetHeight}px`
+        );
+      }
+    };
+
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
+  }, []);
 
   const handleViewMode = () => {
     setViewMode(!isViewMode)
   }
   
-  const handleAddTimer = () => {
-    setTimers((prev) => [...prev, Date.now()]); // use timestamp as unique key
+  const handleAddBlock = (blockType: BlockType) => {
+    setBlocks((prev) => [...prev, {time: Date.now(), blockType}])
   };
 
-  const handleDeleteTimer = (id: number) => {
-    setTimers((prev) => prev.filter((timerId) => timerId !== id));
+  const handleDeleteBlock = (time: number) => {
+    setBlocks((prev) => prev.filter((info: BlockInfo) => info.time !== time));
   };
 
   const handleResizeWindowHeight = () => {
@@ -36,15 +62,25 @@ function App() {
   };
   return (
     <div ref={appContainer}>
-      <WindowBar 
-        onAddTimer={handleAddTimer} 
-        isViewMode={isViewMode}
-        onViewModeUpdated={handleViewMode} 
-        onResizeWindowHeight={handleResizeWindowHeight}/>
-      <Stack spacing={0} sx={{ padding: 0, alignItems: 'center'}}>
-        {timers.map((id) => (
-          <TimerBlock key={id} id={id} onDelete={handleDeleteTimer} isViewMode={isViewMode}/>
-        ))}
+      <Box ref={windowBar} className={styles.windowBar}>
+        <WindowBar
+          onAddBlock={(blockType) => handleAddBlock(blockType)} 
+          isViewMode={isViewMode}
+          onViewModeUpdated={handleViewMode} 
+          onResizeWindowHeight={handleResizeWindowHeight}
+        />
+      </Box>
+      
+      <Stack className={styles.blockStack} spacing={0} >
+        {blocks.map((info) => {
+          let element = undefined
+          if(info.blockType === BlockType.TIMER) {
+            element = <TimerBlock key={info.time} id={info.time} onDelete={handleDeleteBlock} isViewMode={isViewMode}/>
+          } else {
+            element = <RandomNumberBlock key={info.time} id={info.time} onDelete={handleDeleteBlock}/>
+          }
+          return element
+        })}
       </Stack>
     </div>
   )

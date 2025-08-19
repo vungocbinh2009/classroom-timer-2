@@ -63,6 +63,7 @@ export default defineConfig(({ command }) => {
                 external: Object.keys('dependencies' in pkg ? pkg.dependencies : {}),
               },
             },
+            
           },
         },
         // Ployfill the Electron and Node.js API for Renderer process.

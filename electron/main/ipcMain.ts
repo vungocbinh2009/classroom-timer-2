@@ -1,19 +1,14 @@
 import { Corner, WindowSize } from "@/type/main"
-import { BrowserWindow, ipcMain, screen } from "electron"
+import { BrowserWindow, ipcMain, screen, app } from "electron"
+import { IpcMainChannel } from "../shared/channel"
 
 let setupIpcMain = () => {
-    
-    // Các event cần setup
-    // 'window-minimize'
-    // 'window-toggle-maximize'
-    // 'window-close'
-    // 'window-is-maximized'
-    ipcMain.on('window-minimize', () => {
+    ipcMain.on(IpcMainChannel.WINDOW_MINIMIZE, () => {
         let win = BrowserWindow.getFocusedWindow()
         win?.minimize()
     })
 
-    ipcMain.on('window-toggle-maximize', () => {
+    ipcMain.on(IpcMainChannel.WINDOW_TOGGLE_MAXIMIZE, () => {
         let win = BrowserWindow.getFocusedWindow()
         if (!win) return;
         if (win.isMaximized()) {
@@ -22,30 +17,38 @@ let setupIpcMain = () => {
             win.maximize()
         }
     });
-    ipcMain.on('window-close', () => {
+
+    ipcMain.on(IpcMainChannel.WINDOW_CLOSE, () => {
         let win = BrowserWindow.getFocusedWindow()
         win?.close()
     });
-    ipcMain.on("toggle-pin", (event, pin: boolean) => {
+
+    ipcMain.on(IpcMainChannel.TOGGLE_PIN, (event, pin: boolean) => {
         let win = BrowserWindow.getFocusedWindow()
         win?.setAlwaysOnTop(pin);
     });
-    ipcMain.handle('window-is-maximized', () => {
+
+    ipcMain.handle(IpcMainChannel.WINDOW_IS_MAXIMIZED, () => {
         let win = BrowserWindow.getFocusedWindow()
-        win?.isMaximized() ?? false
+        return win?.isMaximized() ?? false
     });
-    ipcMain.on("resize-to-content", (_, size: WindowSize) => {
+
+    ipcMain.on(IpcMainChannel.RESIZE_TO_CONTENT, (_, size: WindowSize) => {
         let win = BrowserWindow.getFocusedWindow()
         if (win) {
-            const [width, _] = win.getSize();
             win.setSize(size.width, size.height);
         }
     })
-    ipcMain.on('move-window', (_, corner: Corner) => {
+
+    ipcMain.on(IpcMainChannel.MOVE_WINDOW, (_, corner: Corner) => {
         let win = BrowserWindow.getFocusedWindow()
         if (win) {
             moveWindowToCorner(win, corner)
         }
+    });
+
+    ipcMain.handle(IpcMainChannel.GET_APP_VERSION, () => {
+        return app.getVersion()
     });
 }
 

@@ -1,0 +1,11 @@
+.windowBar {
+  position: fixed;    /* pin at top regardless of scroll */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1200;
+}
+
+.blockStack {
+    padding-top: var(--windowbar-height, 48px);
+}

@@ -9,15 +9,11 @@
     "release": true,
     "draft": true,
     "assets": [
-        "release/${version}/*.exe",
-        "release/${version}/*.msi",
-        "release/${version}/*.zip",
-        "release/${version}/*.dmg",
-        "release/${version}/*.pkg",
-        "release/${version}/*.AppImage",
-        "release/${version}/*.deb",
-        "release/${version}/*.rpm",
-        "release/${version}/*.tar.gz"
+        "dist-all/*/*/*.exe",
+        "dist-all/*/*/*.zip",
+        "dist-all/*/*/*.dmg",
+        "dist-all/*/*/*.AppImage",
+        "dist-all/*/*/*.deb"
     ]
   },
   "hooks": {

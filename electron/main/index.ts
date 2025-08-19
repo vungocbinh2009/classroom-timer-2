@@ -49,7 +49,7 @@ async function createWindow() {
     height: 500,
     minWidth: 320,
     minHeight: 50,
-    // <- removes OS titlebar and frame
+    // removes OS titlebar and frame
     frame: false,
     // optional: true makes background transparent (has platform caveats)         
     transparent: false,

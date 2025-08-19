@@ -1,97 +1,61 @@
-@use '../styles' as style;
+@use '../styles' as styles;
 @use 'sass:color' as color;
 
 .timerBlock {
+  flex: 0 0 auto;
+  padding: 1rem;
+  background-color: styles.$timer-bg;
   display: flex;
-  margin: 0;
-  padding: 16px;
-  background-color: style.$timer-bg;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  border: 1px solid style.$color-border-gray;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  flex-direction: column;
+  align-items: left;
+  justify-content: left;
+  gap: 0.5rem;
 
-  .left {
-    flex: 0 0 auto;
-    padding: 1rem;
-    background-color: style.$timer-bg;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-
-    .countdown {
-      font-size: 2rem;
-      font-weight: bold;
-      color: style.$timer-text;
-    }
-
-    .controls {
-      display: flex;
-      gap: 0.5rem;
-
-      button {
-        padding: 0.4rem 0.8rem;
-        border: none;
-        border-radius: 0.25rem;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-
-        &.primary {
-          background-color: style.$timer-button-primary-bg;
-          color: style.$timer-button-primary-text;
-
-          &:hover {
-            background-color: style.$color-swinburne-red-light;
-          }
-        }
-
-        &.secondary {
-          background-color: style.$timer-button-secondary-bg;
-          color: style.$timer-button-secondary-text;
-
-          &:hover {
-            background-color: color.adjust(style.$timer-button-secondary-bg, $blackness: 10%);
-          }
-        }
-      }
-    }
+  :global(.MuiButton-root) {
+    background-color: styles.$color-swinburne-red;
   }
 
-  .right {
-    flex: 1;
-    background-color: style.$right-panel-bg;
-    border-left: 1px solid style.$right-panel-border;
-    align-items: center;       // vertical center
-    justify-content: center;   // horizontal center
-    text-align: center;        // center multi-line text
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
+  :global(.MuiSwitch-thumb) {
+    background-color: white; // default
+  }
 
-    .text {
-      flex: 1;
-      font-size: 1rem;
-      color: style.$right-panel-text;
-      margin-bottom: 0.5rem;
-    }
+  :global(.Mui-checked .MuiSwitch-thumb) {
+    background-color: styles.$color-swinburne-red; // when checked
+  }
 
-    .editBtn {
-      align-self: flex-end;
-      background-color: transparent;
-      border: none;
-      color: style.$color-swinburne-red;
-      cursor: pointer;
-      padding: 0.3rem 0.6rem;
-      border-radius: 0.25rem;
-      transition: background-color 0.2s ease;
+  :global(.MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track) {
+    background-color: color.adjust(styles.$color-swinburne-red, $alpha: 0.4);
+  }
 
-      &:hover {
-        background-color: style.$color-swinburne-red-light;
-        color: style.$color-white;
-      }
-    }
+  :global(.MuiTextField-root.Mui-focused) {
+    border-color: styles.$color-swinburne-red;
+  }
+
+  /* When focused — change border to red */
+  :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+    border-color: styles.$color-swinburne-red;
+  }
+
+  /* Textfield label color */
+  :global(.MuiInputLabel-root.Mui-focused) {
+    color: styles.$color-swinburne-red; /* when active */
   }
 }
+
+.timeSetting {}
+
+.minutesOnly {}
+
+.playSound {
+  :global(.MuiButton-root) {
+    color: white;
+  }
+}
+
+.showNoteOnly {}
+
+.noteEditor {}
+
+.timerButtons {}
+
+.deleteButton {}
