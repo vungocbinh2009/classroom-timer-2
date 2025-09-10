@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Grid, Button, IconButton, TextField, Typography, Stack, FormControlLabel, Switch, FormControl, InputLabel, Select, MenuItem, Box, Paper } from '@mui/material';
+import { Grid, Button, IconButton, TextField, Typography, Stack, FormControlLabel, Switch, FormControl, InputLabel, Select, MenuItem, Box, Paper, SelectChangeEvent, Autocomplete } from '@mui/material';
 import { faEdit, faPause, faPlay, faRotateRight, faSave, faTrash } from '@fortawesome/free-solid-svg-icons'
-import Timer from 'easytimer.js';
+import { Timer } from 'easytimer.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from "./TimerBlock.module.scss"
 
@@ -35,14 +35,16 @@ export let TimerBlock = (props: TimerBlockProps) => {
 
   // Play sound at the end of countdown
   const [playSound, setPlaySound] = useState(false);
-  const [customSound, setCustomSound] = useState<string | null>(null);
+  const [customSound, setCustomSound] = useState("");
+  const [soundList, setSoundList] = useState<string[]>([""])
+  const [startEndingSound, setStartEndingSound] = useState(false)
 
   useEffect(() => {
     const t = timerRef.current;
 
     t.addEventListener('targetAchieved', () => {
       setIsRunning(false);
-      playEndingSound();
+      setStartEndingSound(true)
     });
 
     // Cần sửa lại vì khi các yếu tố ở dưới thay đổi, đồng hồ bị dừng lại => Không đúng.
@@ -57,7 +59,6 @@ export let TimerBlock = (props: TimerBlockProps) => {
     t.addEventListener('secondsUpdated', () => {
       const totalSeconds = t.getTotalTimeValues().seconds
       const totalMins = t.getTotalTimeValues().minutes
-      console.log(totalMins)
 
       if (minutesOnly && (totalSeconds >= secondThreshold)) {
         // Show only minutes
@@ -107,20 +108,24 @@ export let TimerBlock = (props: TimerBlockProps) => {
     setIsRunning(false);
   };
 
-  const playEndingSound = () => {
-    if (playSound && customSound) {
+  useEffect(() => {
+    if(startEndingSound && customSound !== "" && playSound) {
       const audio = new Audio(customSound);
       audio.play();
     }
-  };
+    setStartEndingSound(false)
+  }, [startEndingSound, playSound, customSound])
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setCustomSound(url);
+  const handleSoundSelected = (event: any, newValue: string|null) => {
+    if (newValue) {
+      setCustomSound(newValue);
     }
   };
+
+  const updateSoundList = async () => {
+    let soundList = await window.electronAPI.selectSoundFolder()
+    setSoundList(soundList)
+  }
 
   const handleEditToggle = () => {
     if (isEditing) {
@@ -211,27 +216,32 @@ export let TimerBlock = (props: TimerBlockProps) => {
             control={
               <Switch
                 checked={playSound}
-                onChange={(e) => setPlaySound(e.target.checked)}
+                onChange={(e) => {
+                  console.log(`Set play sound to ${e.target.checked}`)
+                  setPlaySound(e.target.checked)
+                  console.log(`Current value: ${playSound}`)
+                }}
               />
             }
             label="Play sound at end"
           />
 
           {playSound && (
-            <Box mt={2}>
-              <Button variant="outlined" component="label">
-                Upload Sound
-                <input
-                  type="file"
-                  hidden
-                  accept="audio/*"
-                  onChange={handleFileUpload}
-                />
+            <Box mt={2} justifyContent="center">
+              <Button variant="outlined" sx={{width: '100%'}}
+               component="label" onClick={updateSoundList}>
+                Select sound folder
               </Button>
-              {customSound && (
-                <Typography variant="body2" mt={1} color="text.secondary">
-                  Custom sound loaded
-                </Typography>
+              {playSound && soundList[0] !== "" && (
+                <Autocomplete
+                  value={customSound}
+                  onChange={handleSoundSelected}
+                  disablePortal
+                  options={soundList}
+                  getOptionLabel={(option) => option.slice('mediafile://'.length)}
+                  sx={{ width: '100%', marginTop: '16px'}}
+                  renderInput={(params) => <TextField {...params} label="Sound" />}
+                />
               )}
             </Box>)}
         </Stack>}
@@ -251,7 +261,7 @@ export let TimerBlock = (props: TimerBlockProps) => {
         </Stack>}
 
       {/* Textfield to edit note */}
-      <Stack direction="row" alignItems="center" spacing={1} className={styles.noteEditor}>
+      <Stack direction="row" justifyContent="center" spacing={1} className={styles.noteEditor}>
         {isEditing ? (
           <TextField
             fullWidth

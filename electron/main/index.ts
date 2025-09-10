@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import os from 'node:os'
 import setupIpcMain from './ipcMain'
+import { registerSchemes, setupProtocol } from './protocol'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -82,8 +83,11 @@ async function createWindow() {
   })
 }
 
+registerSchemes()
+
 app.whenReady().then(() => {
   setupIpcMain()
+  setupProtocol()
   createWindow()
 })
 

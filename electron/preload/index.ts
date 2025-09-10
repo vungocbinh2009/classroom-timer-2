@@ -11,5 +11,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   togglePin: (pin: boolean) => ipcRenderer.send(IpcMainChannel.TOGGLE_PIN, pin),
   resizeToContent: (size: WindowSize) => ipcRenderer.send(IpcMainChannel.RESIZE_TO_CONTENT, size),
   moveWindow: (corner: Corner) => ipcRenderer.send(IpcMainChannel.MOVE_WINDOW, corner),
-  getAppVersion: () => ipcRenderer.invoke(IpcMainChannel.GET_APP_VERSION)
+  getAppVersion: () => ipcRenderer.invoke(IpcMainChannel.GET_APP_VERSION),
+  selectSoundFolder: () => ipcRenderer.invoke(IpcMainChannel.SELECT_SOUND_FOLDER)
 })

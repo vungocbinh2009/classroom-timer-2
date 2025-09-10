@@ -1,6 +1,6 @@
 {
   "name": "classroom-timer-2",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "main": "dist-electron/main/index.js",
   "description": "Simple clock for time management.",
   "author": "Vu Ngoc Binh <vungocbinh@protonmail.com>",
@@ -29,7 +29,8 @@
     "@fortawesome/free-solid-svg-icons": "^7.0.0",
     "@fortawesome/react-fontawesome": "^0.2.3",
     "@mui/material": "^7.3.1",
-    "easytimer.js": "^4.6.0"
+    "easytimer.js": "^4.6.0",
+    "electron-store": "^10.1.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.48.2",
@@ -37,7 +38,7 @@
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
     "autoprefixer": "^10.4.20",
-    "electron": "^33.2.0",
+    "electron": "^38.0.0",
     "electron-builder": "^26.0.12",
     "postcss": "^8.4.49",
     "postcss-import": "^16.1.0",

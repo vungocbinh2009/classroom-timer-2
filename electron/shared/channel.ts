@@ -6,5 +6,6 @@ export enum IpcMainChannel {
   TOGGLE_PIN = "toggle-pin",
   RESIZE_TO_CONTENT = "resize-to-content",
   MOVE_WINDOW = "move-window",
-  GET_APP_VERSION = "get-app-version"
+  GET_APP_VERSION = "get-app-version",
+  SELECT_SOUND_FOLDER = "select-sound-folder"
 }

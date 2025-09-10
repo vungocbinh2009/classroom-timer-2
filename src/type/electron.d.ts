@@ -11,6 +11,7 @@ declare global {
       resizeToContent: (size: WindowSize) => void;
       moveWindow: (corner: Corner) => void;
       getAppVersion: () => Promise<string>
+      selectSoundFolder: () => Promise<string[]>
     };
   }
 }
